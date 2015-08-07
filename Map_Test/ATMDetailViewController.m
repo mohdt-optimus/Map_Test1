@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _name=_atmDetail[1];
+   // _name=_atmDetail[1];
 }
 
 - (void)didReceiveMemoryWarning {

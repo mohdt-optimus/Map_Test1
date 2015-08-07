@@ -26,11 +26,11 @@ CLPlacemark *placemark;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    manager = [[CLLocationManager alloc] init];
     // Do any additional setup after loading the view.
     [_mapView setDelegate:self];
     [[self mapView] setShowsUserLocation:YES];
-    manager = [[CLLocationManager alloc] init];
+    
     
     geocoder = [[CLGeocoder alloc] init];
     self.locationManager = [[CLLocationManager alloc] init];
@@ -81,17 +81,14 @@ CLPlacemark *placemark;
 -(MKAnnotationView *) mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
     MKPinAnnotationView *MyPin=[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current"];
     MyPin.pinColor = MKPinAnnotationColorPurple;
-    
+    MyPin.image=[UIImage imageNamed:@"map_pin.png"];
     UIButton *myDetailButton =
     [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     myDetailButton.frame = CGRectMake(0, 0, 23, 23);
-    myDetailButton.contentVerticalAlignment =
-    UIControlContentVerticalAlignmentCenter;
-    myDetailButton.contentHorizontalAlignment =
-    UIControlContentHorizontalAlignmentCenter;
+    myDetailButton.contentVerticalAlignment=UIControlContentVerticalAlignmentCenter;
+    myDetailButton.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
     
-    [myDetailButton addTarget:self
-                       action:@selector (checkButtonTapped)
+    [myDetailButton addTarget:self action:@selector(checkButtonTapped)
              forControlEvents:UIControlEventTouchUpInside];
     
     MyPin.rightCalloutAccessoryView = myDetailButton;
@@ -114,8 +111,6 @@ CLPlacemark *placemark;
     {
         ATMDetailViewController *detail=segue.destinationViewController;
         detail.atmDetail=places;
-        
-        
     }
 }
 

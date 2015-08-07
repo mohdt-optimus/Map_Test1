@@ -25,6 +25,7 @@
 		DBCA65C71B733E9E00C42DDE /* Pins.m in Sources */ = {isa = PBXBuildFile; fileRef = DBCA65C61B733E9E00C42DDE /* Pins.m */; };
 		DBCA65C91B73673500C42DDE /* map_pin.png in Resources */ = {isa = PBXBuildFile; fileRef = DBCA65C81B73673500C42DDE /* map_pin.png */; };
 		DBCA65CB1B73687800C42DDE /* GoogleMapsM4B.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBCA65CA1B73687800C42DDE /* GoogleMapsM4B.framework */; };
+		DBE65DCB1B745C2C00E0CA33 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DBE65DCA1B745C2C00E0CA33 /* GoogleMaps.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,7 +65,8 @@
 		DBCA65C51B733E9E00C42DDE /* Pins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pins.h; sourceTree = "<group>"; };
 		DBCA65C61B733E9E00C42DDE /* Pins.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pins.m; sourceTree = "<group>"; };
 		DBCA65C81B73673500C42DDE /* map_pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_pin.png; sourceTree = "<group>"; };
-		DBCA65CA1B73687800C42DDE /* GoogleMapsM4B.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMapsM4B.framework; sourceTree = "<group>"; };
+		DBCA65CA1B73687800C42DDE /* GoogleMapsM4B.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMapsM4B.framework; path = Map_Test/GoogleMapsM4B.framework; sourceTree = "<group>"; };
+		DBE65DCA1B745C2C00E0CA33 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = Map_Test/GoogleMapsM4B.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,7 +115,6 @@
 		DBCA65871B731EF500C42DDE /* Map_Test */ = {
 			isa = PBXGroup;
 			children = (
-				DBCA65CA1B73687800C42DDE /* GoogleMapsM4B.framework */,
 				DBCA65C81B73673500C42DDE /* map_pin.png */,
 				DBCA65AE1B7320A500C42DDE /* MapViewController.h */,
 				DBCA65AF1B7320A500C42DDE /* MapViewController.m */,
@@ -163,6 +164,8 @@
 		DBCA65C11B7323AC00C42DDE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DBE65DCA1B745C2C00E0CA33 /* GoogleMaps.bundle */,
+				DBCA65CA1B73687800C42DDE /* GoogleMapsM4B.framework */,
 				DBCA65BF1B73231500C42DDE /* MapKit.framework */,
 				DBCA65BD1B73230800C42DDE /* UIKit.framework */,
 				DBCA65BB1B73230200C42DDE /* Foundation.framework */,
@@ -256,6 +259,7 @@
 				DBCA65991B731EF500C42DDE /* LaunchScreen.xib in Resources */,
 				DBCA65C91B73673500C42DDE /* map_pin.png in Resources */,
 				DBCA65961B731EF500C42DDE /* Images.xcassets in Resources */,
+				DBE65DCB1B745C2C00E0CA33 /* GoogleMaps.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
