@@ -10,20 +10,16 @@
 #import <MapKit/MapKit.h>
 
 @interface Pins : NSObject <MKAnnotation>
-{
-    
-    NSString *_name;
-    NSString *_address;
-    CLLocationCoordinate2D _coordinate;
-    
-}
 
 @property (copy) NSString *name;
 @property (copy) NSString *address;
+@property (copy) NSString *picUrl;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
+//@property (copy) NSString *url;
 
-- (id)initWithName:(NSString*)name address:(NSString*)address coordinate:(CLLocationCoordinate2D)coordinate;
+
+- (id)initWithName:(NSString*)name address:(NSString*)address picUrl:(NSString*)picUrl coordinate:(CLLocationCoordinate2D)coordinate;
 
 @end
 

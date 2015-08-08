@@ -27,6 +27,7 @@ CLPlacemark *placemark;
 - (void)viewDidLoad {
     [super viewDidLoad];
     manager = [[CLLocationManager alloc] init];
+    self.mapView.delegate=self;
     // Do any additional setup after loading the view.
     [_mapView setDelegate:self];
     [[self mapView] setShowsUserLocation:YES];
@@ -39,7 +40,7 @@ CLPlacemark *placemark;
     
     
     if ([[self locationManager] respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-        [[self locationManager] requestWhenInUseAuthorization];
+        [[self locationManager] requestAlwaysAuthorization];
     }
     
     [[self locationManager] setDesiredAccuracy:kCLLocationAccuracyBest];
@@ -73,44 +74,54 @@ CLPlacemark *placemark;
         }
     }];
     annot1.coordinate = loc.center;
-   
-    
     [_mapView addAnnotation: annot1];
 }
 
 -(MKAnnotationView *) mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
-    MKPinAnnotationView *MyPin=[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current"];
-    MyPin.pinColor = MKPinAnnotationColorPurple;
-    MyPin.image=[UIImage imageNamed:@"map_pin.png"];
-    UIButton *myDetailButton =
-    [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-    myDetailButton.frame = CGRectMake(0, 0, 23, 23);
-    myDetailButton.contentVerticalAlignment=UIControlContentVerticalAlignmentCenter;
-    myDetailButton.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;
     
+    
+    MKPinAnnotationView *MyPin=[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current"];
+    UIButton *myDetailButton =
+    [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    CGSize size= CGSizeMake(100.0, 80.0);
+    myDetailButton.frame= CGRectMake(5.0, 5.0, size.width - 10.0, size.height - 10.0);
+    [myDetailButton setTitle:@"Details" forState:UIControlStateNormal];
+    
+    MyPin.rightCalloutAccessoryView =myDetailButton;
+   
     [myDetailButton addTarget:self action:@selector(checkButtonTapped)
              forControlEvents:UIControlEventTouchUpInside];
-    
-    MyPin.rightCalloutAccessoryView = myDetailButton;
- 
+    MyPin.image=[UIImage imageNamed:@"map_pin.png"];
     MyPin.draggable = NO;
     MyPin.highlighted = YES;
     MyPin.animatesDrop=TRUE;
     MyPin.canShowCallout = YES;
+   
     
     return MyPin;
 }
-
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view :(id<MKAnnotation>)annotation{
+    NSLog(@"did select callled");
+}
 -(void) checkButtonTapped{
     [self performSegueWithIdentifier:@"callView" sender:self];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    
-    if ([segue.identifier isEqualToString:@"callView"])
-    {
+      Pins *ann = [[_mapView selectedAnnotations] objectAtIndex:0];
+    if(ann.title==@"Are you Here ?"){
         ATMDetailViewController *detail=segue.destinationViewController;
-        detail.atmDetail=places;
+        detail.nameActual=@"Your Location";
+        detail.vicinityActual=self.address;
+        detail.picUrl=nil;
+    }else{
+            if ([segue.identifier isEqualToString:@"callView"]){
+        
+        ATMDetailViewController *detail=segue.destinationViewController;
+        detail.nameActual=ann.name;
+        detail.vicinityActual=ann.address;
+                detail.picUrl=ann.picUrl;
+      }
     }
 }
 
@@ -130,7 +141,7 @@ CLPlacemark *placemark;
 */
 -(void) queryGooglePlaces: (NSString *) googleType {
     
-    NSString *url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/search/json?location=%f,%f&radius=%@&types=%@&key=%@&sensor=true", 51.50063, -0.124629, [NSString stringWithFormat:@"%i", 500],googleType,kGOOGLE_API_KEY];
+    NSString *url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/search/json?location=%f,%f&radius=%@&types=%@&key=%@&sensor=true", 26.4661371, 80.3625024, [NSString stringWithFormat:@"%i", 500],googleType,kGOOGLE_API_KEY];
     
     //Creating url fro fetching the atm.
     NSURL *googleRequestURL=[NSURL URLWithString:url];
@@ -169,11 +180,14 @@ CLPlacemark *placemark;
         NSDictionary *loc = [geo objectForKey:@"location"];
         NSString *name=[place objectForKey:@"name"];
         NSString *vicinity=[place objectForKey:@"vicinity"];
+        NSString *icon=[place objectForKey:@"icon"];
         CLLocationCoordinate2D placeCoord;
         placeCoord.latitude=[[loc objectForKey:@"lat"] doubleValue];
         placeCoord.longitude=[[loc objectForKey:@"lng"] doubleValue];
-        Pins *placeObject = [[Pins alloc] initWithName:name address:vicinity coordinate:placeCoord];
+        Pins *placeObject = [[Pins alloc] initWithName:name address:vicinity picUrl:icon coordinate:placeCoord ];
         [_mapView addAnnotation:placeObject];
+        
     }
 }
+
 @end

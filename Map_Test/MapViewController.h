@@ -10,10 +10,12 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import <LocalAuthentication/LocalAuthentication.h>
-#define kGOOGLE_API_KEY @"AIzaSyBG9EeUsKfnMN4KhF8XHqeeRulNDkjI8qA"
+//#define kGOOGLE_API_KEY @"AIzaSyBDRvDp6oMGJIRDuHLr2JiUclOuY-Kn0HY"
+  #define kGOOGLE_API_KEY @"AIzaSyB2FW3RI3z8JGuH1xLnJDO07CVnXGpm1mg"
 #define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 
 @interface MapViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate>
+
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic,strong) CLLocationManager *locationManager;

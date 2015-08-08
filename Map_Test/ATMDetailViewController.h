@@ -10,8 +10,16 @@
 #import <CoreLocation/CoreLocation.h>
 @interface ATMDetailViewController : UIViewController <CLLocationManagerDelegate>
 @property (nonatomic,weak) NSArray *atmDetail;
-@property (weak, nonatomic) IBOutlet UILabel *location;
-@property (weak, nonatomic) IBOutlet UILabel *name;
-@property (weak, nonatomic) IBOutlet UILabel *vicinity;
+@property (weak, nonatomic) IBOutlet UITextView *addText;
+
+@property (nonatomic,weak) NSString *picUrl;
+@property (weak, nonatomic) IBOutlet UIImageView *icon;
+
+@property (nonatomic,weak) NSString *nameActual;
+@property (weak, nonatomic) IBOutlet UITextView *nameTextField;
+
+@property (nonatomic) NSString *vicinityActual;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *scroller;
 
 @end

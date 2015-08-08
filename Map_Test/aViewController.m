@@ -1,32 +1,22 @@
 //
-//  ATMDetailViewController.m
+//  aViewController.m
 //  Map_Test
 //
-//  Created by optimusmac-12 on 06/08/15.
+//  Created by optimusmac-12 on 08/08/15.
 //  Copyright (c) 2015 mdtaha.optimus. All rights reserved.
 //
 
-#import "ATMDetailViewController.h"
+#import "aViewController.h"
 
-@interface ATMDetailViewController ()
+@interface aViewController ()
 
 @end
 
-@implementation ATMDetailViewController
+@implementation aViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    _nameTextField.text=[@"Bank Name : " stringByAppendingString:_nameActual];
-    
-    _addText.text=[@"Address : "stringByAppendingString:_vicinityActual];
-    
-    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:_picUrl]]];
-    
-    _icon.image=image;
-    
-    
-    [_scroller setScrollEnabled:YES];
+    // Do any additional setup after loading the view from its nib.
 }
 
 - (void)didReceiveMemoryWarning {
