@@ -170,14 +170,14 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="0VZ-aP-MLF">
                                 <rect key="frame" x="16" y="64" width="568" height="536"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <mutableString key="text">
+                                <string key="text">
 About Us
 
 
 Optimus is designed to help global organizations address their information needs. The world of information is changing and so are the methods of managing it. We provide outsourced technology services to mid-sized organizations who have different needs than Fortune 500 companies. Optimus is designed to meet these specific needs.
 
 The demand for outsourced technology services is increasing as organizations seek to increase their efficiency. This trend has been improved through advancements in technology and telecommunications that now allow outsourcing services to offer seamless services all over the globe.
-</mutableString>
+</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>

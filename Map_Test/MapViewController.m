@@ -14,37 +14,24 @@
 @interface MapViewController ()
 {
     NSArray *places;
+    UIView *calloutView;
+    NSString *check;
 }
 @end
 
 @implementation MapViewController
 
-CLLocationManager *manager;
 CLGeocoder *geocoder;
 CLPlacemark *placemark;
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    manager = [[CLLocationManager alloc] init];
+   
     self.mapView.delegate=self;
     // Do any additional setup after loading the view.
     [_mapView setDelegate:self];
-    [[self mapView] setShowsUserLocation:YES];
-    
-    
     geocoder = [[CLGeocoder alloc] init];
-    self.locationManager = [[CLLocationManager alloc] init];
-    
-    [[self locationManager] setDelegate:self];
-    
-    
-    if ([[self locationManager] respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-        [[self locationManager] requestAlwaysAuthorization];
-    }
-    
-    [[self locationManager] setDesiredAccuracy:kCLLocationAccuracyBest];
-    [[self locationManager] startUpdatingLocation];
     MKCoordinateRegion loc = { {0.0, 0.0} , {0.0, 0.0} };
     loc.center.latitude = 26.4661371;
     loc.center.longitude = 80.3625024;
@@ -53,76 +40,99 @@ CLPlacemark *placemark;
     [_mapView setRegion:loc animated:YES];
     [self queryGooglePlaces:@"atm"];
     CustomAnnotation *annot1 = [[CustomAnnotation alloc] init];
-    annot1.title = @"Are you Here ?";
-    
     CLLocation *ourcoordinate=[[CLLocation alloc] initWithLatitude:26.4661371 longitude:80.3625024];
-    
-    
+
     [geocoder reverseGeocodeLocation:ourcoordinate completionHandler:^(NSArray *placemarks, NSError *error) {
         
         if (error == nil && [placemarks count] > 0) {
             
             placemark = [placemarks lastObject];
             
-            _address = [NSString stringWithFormat:@"%@ %@ %@ %@",
-                        
-                        placemark.postalCode, placemark.locality,
-                        placemark.administrativeArea,
-                        placemark.country];
+            NSArray *lines = placemark.addressDictionary[ @"FormattedAddressLines"];
+            _address = [lines componentsJoinedByString:@", "];
             annot1.subtitle = _address;
             
         }
     }];
     annot1.coordinate = loc.center;
     [_mapView addAnnotation: annot1];
+    
 }
 
 -(MKAnnotationView *) mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
-    
-    
-    MKPinAnnotationView *MyPin=[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current"];
-    UIButton *myDetailButton =
-    [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    CGSize size= CGSizeMake(100.0, 80.0);
-    myDetailButton.frame= CGRectMake(5.0, 5.0, size.width - 10.0, size.height - 10.0);
-    [myDetailButton setTitle:@"Details" forState:UIControlStateNormal];
-    
-    MyPin.rightCalloutAccessoryView =myDetailButton;
+
+    MKAnnotationView *myPin=[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current"];
+    myPin.image=[UIImage imageNamed:@"map_pin.png"];
+    return myPin;
    
-    [myDetailButton addTarget:self action:@selector(checkButtonTapped)
-             forControlEvents:UIControlEventTouchUpInside];
-    MyPin.image=[UIImage imageNamed:@"map_pin.png"];
-    MyPin.draggable = NO;
-    MyPin.highlighted = YES;
-    MyPin.animatesDrop=TRUE;
-    MyPin.canShowCallout = YES;
-   
+}
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
     
-    return MyPin;
+    CGSize  calloutSize = CGSizeMake(200.0, 80.0);
+    calloutView = [[UIView alloc] initWithFrame:CGRectMake((view.frame.origin.x)/2-10, view.frame.origin.y-calloutSize.height, calloutSize.width, calloutSize.height)];
+    
+    calloutView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.6];
+    
+    UITextField *title=[[UITextField alloc] initWithFrame:CGRectMake(50, 10, 300, 20)];
+    
+    [title setTextColor:[UIColor whiteColor]];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    calloutView.layer.cornerRadius = 5;
+    calloutView.clipsToBounds = YES;
+    button.frame = CGRectMake(80,45,30,20);
+    [button setTitle:@"OK" forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [title setFont:[UIFont fontWithName:@"Arial-BoldMT" size:16 ]];
+    [button setBackgroundColor:[UIColor whiteColor]];
+    
+    if(![view.annotation isKindOfClass:[CustomAnnotation class]]) {
+        title.text=@"ATM Near You";
+        [button addTarget:self action:@selector(atmButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+        [calloutView addSubview:title];
+        [calloutView addSubview:button];
+        [view.superview addSubview:calloutView];
+    }
+       
+    else if(![view.annotation isKindOfClass:[MKUserLocation class]]) {
+        title.text=@"Are You Here ?";
+        [button addTarget:self action:@selector(locButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+        [calloutView addSubview:title];
+        [calloutView addSubview:button];
+        [view.superview addSubview:calloutView];
+    }
 }
-- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view :(id<MKAnnotation>)annotation{
-    NSLog(@"did select callled");
+
+-(void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
+{
+    [calloutView removeFromSuperview];
 }
--(void) checkButtonTapped{
+-(void) atmButtonTapped{
+    check=@"atm";
+    [self performSegueWithIdentifier:@"callView" sender:self];
+}
+-(void) locButtonTapped{
+    check=@"loc";
     [self performSegueWithIdentifier:@"callView" sender:self];
 }
 
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-      Pins *ann = [[_mapView selectedAnnotations] objectAtIndex:0];
-    if(ann.title==@"Are you Here ?"){
+    Pins *annot = [[_mapView selectedAnnotations] objectAtIndex:0];
+    if([check isEqualToString:@"loc"]){
+
         ATMDetailViewController *detail=segue.destinationViewController;
-        detail.nameActual=@"Your Location";
-        detail.vicinityActual=self.address;
+        detail.nameActual=@"This is your Location";
+        detail.vicinityActual=_address;
         detail.picUrl=nil;
-    }else{
-            if ([segue.identifier isEqualToString:@"callView"]){
-        
+        check=nil;
+    }else if ([check isEqualToString:@"atm"]){
         ATMDetailViewController *detail=segue.destinationViewController;
-        detail.nameActual=ann.name;
-        detail.vicinityActual=ann.address;
-                detail.picUrl=ann.picUrl;
-      }
+        detail.nameActual=annot.name;
+        detail.vicinityActual=annot.address;
+        detail.picUrl=annot.picUrl;
+        check=nil;
     }
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -190,4 +200,7 @@ CLPlacemark *placemark;
     }
 }
 
+- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated{
+    [calloutView removeFromSuperview];
+}
 @end

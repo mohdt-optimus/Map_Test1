@@ -16,7 +16,6 @@
 @property (copy) NSString *picUrl;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
-//@property (copy) NSString *url;
 
 
 - (id)initWithName:(NSString*)name address:(NSString*)address picUrl:(NSString*)picUrl coordinate:(CLLocationCoordinate2D)coordinate;

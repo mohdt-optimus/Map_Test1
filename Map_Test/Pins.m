@@ -24,13 +24,13 @@
 
 - (NSString *)title {
     if ([_name isKindOfClass:[NSNull class]])
-        return @"Unknown charge";
+        return @"";
     else
-        return @"ATM";
+        return @"";
 }
 
 - (NSString *)subtitle {
-    return @"Near to You";
+    return @"";
 }
 
 

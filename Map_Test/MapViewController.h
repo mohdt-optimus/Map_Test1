@@ -14,7 +14,7 @@
   #define kGOOGLE_API_KEY @"AIzaSyB2FW3RI3z8JGuH1xLnJDO07CVnXGpm1mg"
 #define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 
-@interface MapViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate>
+@interface MapViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate,UIGestureRecognizerDelegate>
 
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
